@@ -1,0 +1,21 @@
+<section class="course-container">
+	<h2>Courses.</h2>
+	<a href="#" class="btn waves-effect waves-light btn-add-course">new</a>
+	<button class="btn-close">x</button>
+	{% if courses !=[] %}
+	<div>
+		<ul class="course-list">
+			{% for course in courses %}
+				<li class="course-list-item">
+					<a href="/category/{{course.category_id}}/{{course.id}}/" class="course-list__item__link">
+						<span>{{course.name}}</span>
+						<p>{{course.description}}</p>
+					</a>
+				</li>
+				<div class="divider"></div>
+				<br>
+			{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+</section>

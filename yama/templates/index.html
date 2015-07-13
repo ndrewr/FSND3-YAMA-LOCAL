@@ -27,25 +27,7 @@
 	</section>
 
 	<section class="list-container">
-	<section class="course-container">
-		<h2>Courses.</h2>
-		<a href="#" class="btn-add-course">new</a>
-		<button class="btn-close">x</button>
-		{% if courses !=[] %}
-		<div>
-			<ul class="course-list">
-				{% for course in courses %}
-					<li class="course-list-item">
-							<span>{{course.name}}</span>
-							<p>{{course.description}}</p>
-					</li>
-					<div class="divider"></div>
-					<br>
-				{% endfor %}
-			</ul>
-		</div>
-		{% endif %}
-	</section>
+	{% include "course-list.html" %}
 
 	<section class="recent-posts-container">
 		<h2>New.</h2>
