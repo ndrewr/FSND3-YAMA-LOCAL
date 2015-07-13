@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="course-item-detail">
+	<div class="">
+		<a href="/category/{{course.category_id}}">
+		<span>&lt; back to </span>
+		<span>category: </span>
+		<span>{{category.name}}</span>
+		</a>
+	</div>
+	<div class="divider"></div>
+	<h4>{{course.name}}</h4>
+	<a class="course-item-detail__link" href="{{course.url}}" target="_blank">link</a>
+	<br>
+	<span>description: </span>
+	<p class="flow-text">{{course.description}}</p>
+
+</section>
+{% endblock %}

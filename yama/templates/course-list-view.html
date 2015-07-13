@@ -5,7 +5,7 @@
 	<h4>Choose a course category</h4>
 		
 	<div class="divider"></div>
-	<section class="category-container">
+	<section class="category-container rise">
 		<h2>Skills.</h2>
 
 		{% if categories !=[] %}	
@@ -26,10 +26,10 @@
 		{% endif %}
 	</section>
 
-	<section class="list-container">
+	<section class="list-container slide-in">
 	{% include "course-list.html" %}
 
-	<section class="recent-posts-container">
+	<section class="recent-posts-container obscure">
 		<h2>New.</h2>
 		{% if recent_posts !=[] %}	
 		<div>
