@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="">
+	<h4>Add a course for {{category.name}}</h4>
+	<!--<form>
+		<label for="name">Course Name:</label>
+		<input type ="text" maxlength="50" class="form-control" name="name"placeholder="Name of the course (ex. Udacity Coding 101)">
+		<label for="description">Description:</label>
+		<textarea class="form-control" maxlength="250" rows="3" name="description" placeholder="Description of the course"></textarea>
+		<button type="submit" class="btn btn-default" id="submit" type="submit">Create</button>
+	</form> -->
+
+	<form action="/category/{{category.id}}/add/" method="post">
+    	{{ form.hidden_tag() }}
+		{{ form.name.label }}: {{ form.name(placeholder="Name of the course (ex. Udacity Coding 101)") }}
+		{{ form.url.label }}: {{ form.url(placeholder="www.javascript.com") }}
+		{{ form.description.label }}: {{ form.description(placeholder="Description of the course") }}
+  		<button class="btn waves-effect waves-light" type="submit">Submit</button>
+	</form>
+
+</section>
+
+{% endblock %}

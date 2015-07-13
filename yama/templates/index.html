@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- <div class="section"> -->
+	<h4>Choose a course category</h4>
+		
+	<div class="divider"></div>
+	<section class="category-container">
+		<h2>Skills.</h2>
+
+		{% if categories !=[] %}	
+		<div>
+			<ul class="category-list">
+				{% for category in categories %}
+					<li class="category-list__item" data-category-id="{{category.id}}">
+						<a class="category-list__item__link" href="#">
+							<span>{{category.name}}</span>
+							<p>{{category.description}}</p>
+						</a>
+					</li>
+					<div class="divider"></div>
+					<br>
+				{% endfor %}
+			</ul>
+		</div>
+		{% endif %}
+	</section>
+
+	<section class="list-container">
+	<section class="course-container">
+		<h2>Courses.</h2>
+		<a href="#" class="btn-add-course">new</a>
+		<button class="btn-close">x</button>
+		{% if courses !=[] %}
+		<div>
+			<ul class="course-list">
+				{% for course in courses %}
+					<li class="course-list-item">
+							<span>{{course.name}}</span>
+							<p>{{course.description}}</p>
+					</li>
+					<div class="divider"></div>
+					<br>
+				{% endfor %}
+			</ul>
+		</div>
+		{% endif %}
+	</section>
+
+	<section class="recent-posts-container">
+		<h2>New.</h2>
+		{% if recent_posts !=[] %}	
+		<div>
+			<ul class="">
+				{% for course in recent_posts %}
+					<li class="course-list-item">
+						<span>{{course.name}}</span>
+						<p>{{course.description}}</p>
+					</li>
+					<div class="divider"></div>
+					<br>
+				{% endfor %}
+			</ul>
+		</div>
+		{% endif %}
+
+	</section>
+	</section>
+
+<!-- </div> -->
+
+{% endblock %}

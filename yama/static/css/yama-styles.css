@@ -1,0 +1,153 @@
+/* 
+	Project 3 Catalog app: master style sheet
+*/
+html, body {
+	min-height: 100%;
+}
+body {
+	margin-bottom: 100px;
+}
+header, div, footer {
+	overflow: auto;
+}
+footer {
+	width: 100%;
+	position: absolute;
+	/*bottom: 0;*/
+	margin-top: 20px;
+}
+
+a {
+	color: #fff;
+}
+
+.header-login {
+	text-align: right;
+}
+
+.brand {
+
+}
+.brand-sub-msg {
+
+
+}
+.brand-hover-msg {
+	display: none;
+}
+.brand-hover-msg:hover {
+	display: inherit;
+}
+
+.main-content {
+	/*max-height: 300px;*/
+	overflow: hidden;
+	position: relative;
+
+}
+
+section {
+	box-sizing: border-box;
+	padding: 1em;
+	display: inline-block;
+
+	max-height: 90%; 
+	vertical-align: text-top;
+
+	overflow-y: scroll;
+
+	position: relative;
+}
+
+/*@-webkit-keyframes riseUp { 
+	border: 1px solid #ccc;
+	box-shadow: 5px 3px 9px 1px #ccc;
+}
+@keyframes riseUp { 
+	border: 1px solid #ccc;
+	box-shadow: 5px 3px 9px 1px #ccc;
+}*/
+.category-container {
+	width: 38%;
+
+  	transition: all 0.5s linear;
+/*
+	animation:  riseUp 1s ease-in-out 3s 3 forwards;
+	-webkit-animation:  riseUp 1s ease-in-out 0s 1 forwards;*/
+	position: relative;
+	z-index: 200;
+	background-color: #fff;
+}
+.rise {
+	border: 1px solid #ccc;
+	box-shadow: 5px 3px 9px 1px #ccc;
+	background-color: aliceblue;
+}
+
+.category-list__item__link {
+	color: #000;
+}
+
+
+.course-container {
+	/*display: none;*/
+	width: 48%;
+	/*padding: 0;*/
+	position: absolute;
+	z-index: 100;
+	/*margin-right: 200px;*/
+	/*left: -320px;*/
+	transition: all .8s ease-out .8s;
+}
+
+.btn-close {
+	position: absolute;
+	height: auto;
+	width: auto;
+	right: 5px;
+	top: 5px;
+
+}
+
+.btn-add-course {
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	color: #000;
+}
+
+.recent-posts-container {
+
+	width: 48%;
+	left: 55%;
+	transition: all .8s ease-out .5s;
+
+}
+
+.obscure {
+	color: #777;
+	background-color: #ddd;
+	opacity: .4;
+	pointer-events: none;
+}
+
+.list-container {
+		vertical-align: text-top;
+
+	width: 90%;
+	/*padding: 0;*/
+	position: absolute;
+
+	z-index: 100;
+	/*margin-right: 200px;*/
+	left: -8%;
+	transition: all .8s ease-out 1s;
+}
+
+.slide-in {
+	/*display: inline-block;*/
+	/*margin-right: 0;*/
+	/*width: 60%;*/
+	/*padding: 1em;*/
+	left: 40%;
+}

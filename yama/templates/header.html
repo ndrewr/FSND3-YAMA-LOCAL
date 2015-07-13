@@ -1,0 +1,15 @@
+<header class="row teal lighten-1">
+	<div class="col s6">
+		<a class="brand" href="{{url_for('home')}}">
+			<h2 class="">YAMA</h2>
+			<p class="brand-sub-msg">Yet Another MOOC Aggregator</p>
+		</a>
+	</div>
+	<div class="header-login col s6">
+		{% if 'username' not in session %}
+		<a href="{{url_for('loginUser')}}">Log In </a>
+		{% else %}
+		<a href="{{url_for('logoutUser')}}">Disconnect </a>
+		{% endif %}
+	</div>
+</header>
