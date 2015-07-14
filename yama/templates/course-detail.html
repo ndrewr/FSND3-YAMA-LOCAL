@@ -1,19 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="course-item-detail">
-	<div class="">
+<div class="course-item-detail-wrapper">
+<div class="">
 		<a href="/category/{{course.category_id}}">
 		<span>&lt; back to </span>
 		<span>category: </span>
 		<span>{{category.name}}</span>
 		</a>
-	</div>
-	<div class="divider"></div>
-	<h4>{{course.name}}</h4>
-	<a class="course-item-detail__link" href="{{course.url}}" target="_blank">link</a>
-	<br>
-	<span>description: </span>
-	<p class="flow-text">{{course.description}}</p>
+</div>
+<div class="divider"></div>
 
+<section class="course-item-detail">
+	<h4>{{course.name}}</h4>
+	<div>
+		<a class="course-item-detail__link" href="{{course.url}}" target="_blank">link</a>
+		<a class="btn-edit" href="#">edit</a>
+	</div>
+	<br>
+	<p class="flow-text">{{course.description}}</p>
 </section>
+
+<section class="course-item-edit">
+	<h4>Edit {{course.name}}</h4>
+	<button class="btn-edit-close btn-floating waves-effect waves-light">x</button>
+	<form class="" action="/category/{{course.category_id}}/{{course.id}}/edit/" method="POST">
+		{{ form.hidden_tag() }}
+		{{ form.name.label }}: {{ form.name() }}
+		{{ form.url.label }}: {{ form.url() }}
+		{{ form.description.label }}: {{ form.description() }}
+		<br>
+  		<button class="btn waves-effect waves-light" type="submit">Submit</button>
+	</form>
+</section>
+
+</div>
 {% endblock %}

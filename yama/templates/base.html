@@ -9,6 +9,7 @@
         <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
 		<!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
   		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
+  		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/materialize.min.css') }}">
 		<!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}"> -->
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/yama-styles.css') }}">
 	</head>
@@ -33,6 +34,8 @@
 		</div>
 		{% include "footer.html" %}
      	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+     	<script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
+     	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='js/yama-script.js') }}"></script>
 	</body>
