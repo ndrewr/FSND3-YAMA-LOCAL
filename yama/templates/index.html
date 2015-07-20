@@ -27,28 +27,32 @@
 	</section>
 
 	<section class="list-container">
-	{% include "course-list.html" %}
+		{% include "course-list.html" %}
 
-	<section class="recent-posts-container">
-		<h2>New.</h2>
-		{% if recent_posts !=[] %}	
-		<div>
-			<ul class="">
-				{% for course in recent_posts %}
-					<li class="course-list-item">
-						<a href="/details/{{course.id}}">
-							<span>{{course.name}}</span>
-							<p>{{course.description}}</p>
-						</a>
-					</li>
-					<div class="divider"></div>
-					<br>
-				{% endfor %}
-			</ul>
-		</div>
-		{% endif %}
+		<section class="recent-posts-container">
+			<h2>New.</h2>
+			{% if recent_posts !=[] %}	
+			<div>
+				<ul class="">
+					{% for course in recent_posts %}
+						<li class="course-list-item">
+							<a href="/details/{{course.id}}">
+								<span>{{course.name}}</span>
+								<p>
+								{{
+									(course.description[0:40] if course.description|length > 39 else course.description[0:]) + '...'
+								}}
+								</p>
+							</a>
+						</li>
+						<div class="divider"></div>
+						<br>
+					{% endfor %}
+				</ul>
+			</div>
+			{% endif %}
 
-	</section>
+		</section>
 	</section>
 
 <!-- </div> -->

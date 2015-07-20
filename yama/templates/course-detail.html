@@ -28,8 +28,8 @@
 		{{ form.name.label }}: {{ form.name() }}
 		{{ form.url.label }}: {{ form.url() }}
 		{{ form.description.label }}: {{ form.description() }}
-		<br>
   		<button class="btn waves-effect waves-light" type="submit">Submit</button>
+  		<div class="delete-option-wrapper"><a href="/category/{{course.category_id}}/{{course.id}}/delete/" class="btn btn-delete-confirm">sure?</a><a href="#" class="btn btn-delete">delete</a><div>
 	</form>
 </section>
 

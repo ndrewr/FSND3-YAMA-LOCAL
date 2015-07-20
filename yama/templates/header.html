@@ -1,15 +1,24 @@
 <header class="row teal lighten-1">
-	<div class="col s6">
-		<a class="brand" href="{{url_for('home')}}">
-			<h2 class="">YAMA</h2>
-			<p class="brand-sub-msg">Yet Another MOOC Aggregator</p>
+	<div class="col s6 brand">
+		<a class="" href="{{url_for('home')}}">
+			<h1 class="">YAMA</h1>
+			<span class="brand-sub-msg">Yet Another MOOC Aggregator</span>
 		</a>
 	</div>
 	<div class="header-login col s6">
-		{% if 'username' not in session %}
-		<a href="{{url_for('loginUser')}}">Log In </a>
+		{% if 'username' not in login_session %}
+			<a class="btn-login" href="#">connect </a><span> to contribute</span>
 		{% else %}
-		<a href="{{url_for('logoutUser')}}">Disconnect </a>
+			<p>Salutations, {{ login_session['username'] }}.</p>
+			<a class="btn-logout" href="{{url_for('logoutUser')}}">disconnect </a>
 		{% endif %}
 	</div>
 </header>
+<div class="login-modal-container">
+	<h5>How will you login?</h5>
+	<button class="btn-login-modal-close btn-floating waves-effect waves-light">x</button>
+	<!-- <a href="https://github.com/login/oauth/authorize?scope=user&client_id=16fc556aba5abc401d80&redirect_uri=http://localhost:5000/userconnect?state={{state}}"> 
+      	git me in!
+    </a> -->
+    <a href="/gitconnect/" >Git me in!</a>
+</div>

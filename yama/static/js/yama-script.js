@@ -3,17 +3,19 @@
 	Author: Andrew Roy Chen
 *************************************************************/
 
-$('body').on('click', 'li', function(e) {
+$('.category-container').on('click', 'li', function(e) {
 	e.preventDefault();
 	// NOTE will treat link as async data request
 	var categoryID = $(e.currentTarget).data('category-id');
-	var url = "/category/" + categoryID;
-	$.getJSON(url, function(data) {
+	var url = '/category/' + categoryID;
+	$.getJSON(url+'/json', function(data) {
 		var _category_list = $(".course-list");
 		var items = '';
 		data.CategoryCourses.forEach(function(course) {
-			var course_item = '<li class="course-list-item"><span>' + course.name +
-			'</span><p>' + course.description + '</p></li><div class="divider"></div><br>';
+			var course_item = '<li class="course-list-item">' + 
+			'<a href="' + url + '/' + course.id + '/" class="course-list__item__link">' + 
+			'<span>' + course.name + '</span><p>' + course.description + '</p></a>' +
+			'</li><div class="divider"></div><br>';
 			items += course_item;
 		});
 		_category_list.html('');
@@ -38,4 +40,27 @@ $('body').on('click', '.btn-close', function() {
 			$('.recent-posts-container').removeClass('obscure');
 		}, 2000);
 
+});
+
+$('.main-content').on('click', '.btn-edit', function(e) {
+	$('.course-item-detail').addClass('phase-out');
+	$('.course-item-edit').addClass('phase-in');
+});
+
+$('body').on('click', '.btn-edit-close', function() {
+	$('.course-item-detail').removeClass('phase-out');
+	$('.course-item-edit').removeClass('phase-in');
+});
+
+$('.main-content').on('click', '.btn-delete', function(e) {
+	$('.btn-delete-confirm').addClass('btn-slide-out');
+});
+
+$('body').on('click', '.btn-login', function(e) {
+	console.log('hi');
+	$('.login-modal-container').addClass('fadeIn');
+});
+
+$('body').on('click', '.btn-login-modal-close', function(e) {
+	$('.login-modal-container').removeClass('fadeIn');
 });
