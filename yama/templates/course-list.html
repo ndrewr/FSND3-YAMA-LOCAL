@@ -11,7 +11,9 @@
 				<li class="course-list-item">
 					<a href="/category/{{course.category_id}}/{{course.id}}/" class="course-list__item__link">
 						<span>{{course.name}}</span>
-						<p>{{course.description}}</p>
+						<p>{{
+							(course.description[0:80] if course.description|length > 79 else course.description[0:]) + '...'
+						}}</p>
 					</a>
 				</li>
 				<div class="divider"></div>

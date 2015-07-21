@@ -6,16 +6,18 @@
 $('.category-container').on('click', 'li', function(e) {
 	e.preventDefault();
 	// NOTE will treat link as async data request
-	var categoryID = $(e.currentTarget).data('category-id');
-	var url = '/category/' + categoryID;
+	var categoryID = $(e.currentTarget).data('category-id'),
+		url = '/category/' + categoryID;
 	$.getJSON(url+'/json', function(data) {
-		var _category_list = $(".course-list");
-		var items = '';
+		var _category_list = $(".course-list"),
+			items = '';
+
 		data.CategoryCourses.forEach(function(course) {
-			var course_item = '<li class="course-list-item">' + 
+			var text_cutoff = course.description.length > 79 ? 80 : course.description.length, 
+				course_item = '<li class="course-list-item">' + 
 			'<a href="' + url + '/' + course.id + '/" class="course-list__item__link">' + 
-			'<span>' + course.name + '</span><p>' + course.description + '</p></a>' +
-			'</li><div class="divider"></div><br>';
+			'<span>' + course.name + '</span><p>' + course.description.slice(0, text_cutoff) + '...' 
+			+ '</p></a></li><div class="divider"></div><br>';
 			items += course_item;
 		});
 		_category_list.html('');

@@ -33,6 +33,7 @@ a {
 	top: 50%;
 	transform: translateY(-50%);
 	font-size: 1.2em;
+	color: #222;
 }
 .header-login__greeting {
 	margin-bottom: 0;
@@ -100,7 +101,7 @@ section {
 .rise {
 	border: 1px solid #ccc;
 	box-shadow: 5px 3px 9px 1px #ccc;
-	background-color: aliceblue;
+	background-color: #eff;
 }
 
 .category-list__item__link,
@@ -178,6 +179,7 @@ section {
 	padding: 1em 2em;
 	position: absolute;
 	top: 40px;
+	left: 0;
 	z-index: 0;
 	opacity: 0;
 	transition: opacity .6s linear;
@@ -264,7 +266,7 @@ section {
 	position: absolute;
 	display: none;
 	padding: 2em;
-	background-color: #fff;
+	background-color: #eff;
 	opacity: 0;
 	border: 2px solid #BCAAA4;
 	border-radius: 5px;

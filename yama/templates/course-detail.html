@@ -12,6 +12,7 @@
 
 <section class="course-item-detail">
 	<h4>{{course.name}}</h4>
+	<p class="course-item-detail__author">original contributor: {{course.creator.name}}</p>
 	<div>
 		<a class="course-item-detail__link" href="{{course.url}}" target="_blank">link</a>
 		{% if 'user_name' in session %}

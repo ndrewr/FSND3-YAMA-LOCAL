@@ -23,8 +23,7 @@ def home():
     # 5 most recently added courses
     recent = Item.query.order_by(Item.id.desc()).limit(5)
 
-    # state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
-    # login_session['state'] = state
+    login_session['prev_url'] = '/'
 
     return render_template('index.html', categories=categories, recent_posts=recent, state=getState())
 
@@ -40,7 +39,6 @@ def getState():
 # this page should auto-redirect to the prev page user was on?
 @app.route('/login')
 def loginUser():
-    print 'loggin in!'
     if request.args.get('state') != login_session['state']:
         flash('Hey what state are you in? Redirected.')
         return redirect('/')
@@ -51,22 +49,7 @@ def loginUser():
     return github.authorize()
 
 
-def responseMaker(msg, code):
-    response = make_response(json.dumps(msg), code)
-    response.headers['Content-Type'] = 'application/json'
-    return response
-
-
-# handles signin from third party
-@app.route('/gitconnect/', methods=['GET', 'POST'])
-def githubconnect():
-    if 'user_name' in login_session:
-        flash('User is already logged in.')
-        return redirect('/')
-    # if no current user go ahead and kick off authorization
-    return github.authorize()
-
-
+# mandatory; used by Github-Flask when making requests to github
 @github.access_token_getter
 def gittoken():
     token = login_session.get('token')
@@ -77,8 +60,9 @@ def gittoken():
 @app.route('/authhandler')
 @github.authorized_handler
 def authorized(oauth_token):
-    print "called by github!"
-    next_url = request.args.get('next') or url_for('home')
+    # next_url = request.args.get('next') or url_for('home')
+    next_url = login_session['prev_url'] or url_for('home')
+    print 'going to %s' % (next_url)
     if oauth_token is None:
         flash("Authorization failed.")
         return redirect(next_url)
@@ -120,7 +104,15 @@ def logoutUser():
         del login_session['token']
 
     flash('Logged out!')
-    return redirect('/')
+    return redirect(login_session['prev_url'])
+
+
+# convenience method to get User ID info
+def getUserID():
+    fetchedID = 0  # this should never show up since Add Course is login only
+    if 'user_id' in login_session:
+        fetchedID = login_session['user_id']
+    return fetchedID
 
 
 # show all courses available under one subject
@@ -133,6 +125,8 @@ def showCourses(category_id):
     courses = Item.query.filter_by(category_id=category_id).all()
     categories = Category.query.all()
     recent = Item.query.order_by(Item.id.desc()).limit(5)
+
+    login_session['prev_url'] = request.path
     return render_template('course-list-view.html', category_id=category_id,
                             categories=categories, courses=courses,
                             recent_posts=recent, state=getState())
@@ -163,7 +157,7 @@ def addCourse(category_id):
                 url=form.url.data,
                 description=form.description.data,
                 category_id=category.id,
-                user_id=1)
+                user_id=getUserID())
         db.session.add(new_item)
         db.session.commit()
         flash('* New course item %s successfully added to %s.' %
@@ -183,8 +177,11 @@ def showCourse(category_id=1, course_id=1):
     course = Item.query.filter_by(id=course_id).one()
     category = Category.query.filter_by(id=course.category_id).one()
     form = TitleDescriptionForm(obj=course)
+
+    login_session['prev_url'] = request.path
+
     return render_template('course-detail.html', category=category,
-                            course=course, form=form)
+                            course=course, form=form, state=getState())
 
 
 # shows an interface to edit the details of a specific course

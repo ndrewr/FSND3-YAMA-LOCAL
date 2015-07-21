@@ -14,7 +14,7 @@ class User(db.Model):
     name = db.Column(db.String(250), nullable=False)
     email = db.Column(db.String(250), unique=True, nullable=False)
     picture = db.Column(db.String(250))
-    # user = db.relationship('User', backref='creator', lazy='dynamic')
+    posts = db.relationship('Item', backref='creator', lazy='dynamic')
 
     def __init__(self, username="Zed", email="example@mail.com", picture=""):
         self.name = username
