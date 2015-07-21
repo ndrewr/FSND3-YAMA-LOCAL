@@ -38,7 +38,11 @@
 					<li class="course-list-item">
 						<a href="/details/{{course.id}}">
 							<span>{{course.name}}</span>
-							<p>{{course.description}}</p>
+							<p>
+								{{
+									(course.description[0:40] if course.description|length > 39 else course.description[0:]) + '...'
+								}}
+							</p>
 						</a>
 					</li>
 					<div class="divider"></div>

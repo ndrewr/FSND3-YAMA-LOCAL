@@ -14,12 +14,15 @@
 	<h4>{{course.name}}</h4>
 	<div>
 		<a class="course-item-detail__link" href="{{course.url}}" target="_blank">link</a>
-		<a class="btn-edit" href="#">edit</a>
+		{% if 'user_name' in session %}
+			<a class="btn-edit" href="#">edit</a>
+		{% endif %}
 	</div>
 	<br>
 	<p class="flow-text">{{course.description}}</p>
 </section>
 
+{% if 'user_name' in session %}
 <section class="course-item-edit">
 	<h4>Edit {{course.name}}</h4>
 	<button class="btn-edit-close btn-floating waves-effect waves-light">x</button>
@@ -32,6 +35,7 @@
   		<div class="delete-option-wrapper"><a href="/category/{{course.category_id}}/{{course.id}}/delete/" class="btn btn-delete-confirm">sure?</a><a href="#" class="btn btn-delete">delete</a><div>
 	</form>
 </section>
+{% endif %}
 
 </div>
 {% endblock %}

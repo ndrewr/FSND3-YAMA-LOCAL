@@ -23,17 +23,32 @@ def home():
     # 5 most recently added courses
     recent = Item.query.order_by(Item.id.desc()).limit(5)
 
+    # state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+    # login_session['state'] = state
+
+    return render_template('index.html', categories=categories, recent_posts=recent, state=getState())
+
+
+# helper that sets session state value and returns for page render
+def getState():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     login_session['state'] = state
+    return state
 
-    return render_template('index.html', categories=categories, recent_posts=recent, state=state)
 
-
-# shows the user login page with third party auth options
-# this page should auto-redirect to the prev page user was on
-@app.route('/login/')
+# handles signin from third party
+# this page should auto-redirect to the prev page user was on?
+@app.route('/login')
 def loginUser():
-    return 'This is the login page.'
+    print 'loggin in!'
+    if request.args.get('state') != login_session['state']:
+        flash('Hey what state are you in? Redirected.')
+        return redirect('/')
+    if 'user_name' in login_session:
+        flash('User is already logged in.')
+        return redirect('/')
+    # if no current user go ahead and kick off authorization
+    return github.authorize()
 
 
 def responseMaker(msg, code):
@@ -45,32 +60,11 @@ def responseMaker(msg, code):
 # handles signin from third party
 @app.route('/gitconnect/', methods=['GET', 'POST'])
 def githubconnect():
+    if 'user_name' in login_session:
+        flash('User is already logged in.')
+        return redirect('/')
+    # if no current user go ahead and kick off authorization
     return github.authorize()
-
-    if request.args.get('state') != login_session['state']:
-        return responseMaker('Invalid state', 401)
-
-
-    # Store the access token in the session for later use.
-    login_session['credentials'] = credentials
-    login_session['gplus_id'] = gplus_id
-
-    # Get user info
-    userinfo_url = 'https://www.googleapis.com/oauth2/v1/userinfo'
-    params = {'access_token': credentials.access_token, 'alt': 'json'}
-    answer = requests.get(userinfo_url, params=params)
-    data = json.loads(answer.text)
-
-    login_session['username'] = data["name"]
-    login_session['picture'] = data["picture"]
-    login_session['email'] = data["email"]
-
-    # check if user exists in database; if not add them
-    user_id = getUserID(login_session['email'])
-    if not user_id:
-        createUser(login_session)
-    # add the now logged-in user to session
-    login_session['user_id'] = user_id
 
 
 @github.access_token_getter
@@ -80,7 +74,7 @@ def gittoken():
         return token
 
 
-@app.route('/git-auth-handler/')
+@app.route('/authhandler')
 @github.authorized_handler
 def authorized(oauth_token):
     print "called by github!"
@@ -88,97 +82,60 @@ def authorized(oauth_token):
     if oauth_token is None:
         flash("Authorization failed.")
         return redirect(next_url)
-    
+
+    # add token to session required for Flask-Github token getter implmtation
     login_session['token'] = oauth_token
     gituser = github.get('user')
-    login_session['username'] = gituser.get('name')
-    login_session['user'] = User.query.filter_by(git_email=gituser.email).first()
-    #login_session['current_user'] = fetchedUser
-    flash("Authorized! ...now what?")
+
+    user_email = gituser['email']
+    user_name = gituser['name']
+    user_avatar_link = gituser['avatar_url']
+    login_session['user_name'] = user_name
+
+    # check if this User is registered in the db...
+    fetchedUser = User.query.filter_by(email=user_email).first()
+    if fetchedUser is None:
+        # create a new User in the db with these login credentials
+        current_user = User(username=user_name,
+                email=user_email,
+                picture=user_avatar_link)
+        db.session.add(current_user)
+        db.session.commit()
+        login_session['user_id'] = current_user.id
+    else:
+        # otherwise set session with this user's data
+        login_session['user_id'] = fetchedUser.id
+
+    flash("Authorized! Access granted to User %s." % (user_name))
     return redirect(next_url)
 
 
-@app.route('/gconnect/', methods=['GET', 'POST'])
-def gconnect():
-    if request.args.get('state') != login_session['state']:
-        return responseMaker('Invalid state', 401)
-
-    # code = request.args.get('code')
-    code = request.data
-
-    try:
-        # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
-        oauth_flow.redirect_uri = 'postmessage'
-        credentials = oauth_flow.step2_exchange(code)
-    except FlowExchangeError:
-        return responseMaker('Failed to upgrade the authorization code.', 401)
-
-    # Check that the access token is valid
-    access_token = credentials.access_token
-    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
-    h = httplib2.Http()
-    result = json.loads(h.request(url, 'GET')[1])
-
-    # If there was an error in the access token info, abort.
-    if result.get('error') is not None:
-        return responseMaker(result.get('error'), 500)
-
-    # Verify that the access token is used for the intended
-    gplus_id = credentials.id_token['sub']
-    if result['user_id'] != gplus_id:
-        return responseMaker("Token's user ID doesn't match given user ID.", 401)
-
-    # Verify that the access token is valid for this client
-    if result['issued_to'] != CLIENT_ID:
-        return responseMaker("Token's client ID does not match app.", 401)
-
-    # Check to see if user is already logged in
-    stored_credentials = login_session.get('credentials')
-    stored_gplus_id = login_session.get('gplus_id')
-    if stored_credentials is not None and gplus_id == stored_gplus_id:
-        return responseMaker('Current user is already connected.', 200)
-
-    # Store the access token in the session for later use.
-    login_session['credentials'] = credentials
-    login_session['gplus_id'] = gplus_id
-
-    # Get user info
-    userinfo_url = 'https://www.googleapis.com/oauth2/v1/userinfo'
-    params = {'access_token': credentials.access_token, 'alt': 'json'}
-    answer = requests.get(userinfo_url, params=params)
-    data = json.loads(answer.text)
-
-    login_session['username'] = data["name"]
-    login_session['picture'] = data["picture"]
-    login_session['email'] = data["email"]
-
-    # check if user exists in database; if not add them
-    user_id = getUserID(login_session['email'])
-    if not user_id:
-        createUser(login_session)
-    # add the now logged-in user to session
-    login_session['user_id'] = user_id
-
-    flash("you are now logged in as %s" % login_session['username'])
-    return redirect('/')
-
-
-# automatically logsout the user and redirects them to home page
+# logsout the user and redirects them to home page
 @app.route('/logout/')
 def logoutUser():
-    return 'This will be the logout page.'
+    # Reset the user's session data
+    if 'user_name' in login_session:
+        del login_session['user_name']
+        del login_session['user_id']
+        del login_session['token']
+
+    flash('Logged out!')
+    return redirect('/')
 
 
 # show all courses available under one subject
 # logged-in users will also see an 'add' option for new courses
+# NOTE must set state here too; this route is like a second index.html,
+# hit when User goes from Course-Detail view back to Course-List view
 @app.route('/category/<int:category_id>/')
 @app.route('/category/<int:category_id>/list/')
 def showCourses(category_id):
     courses = Item.query.filter_by(category_id=category_id).all()
     categories = Category.query.all()
     recent = Item.query.order_by(Item.id.desc()).limit(5)
-    return render_template('course-list-view.html', category_id=category_id, categories=categories, courses=courses, recent_posts=recent)
+    return render_template('course-list-view.html', category_id=category_id,
+                            categories=categories, courses=courses,
+                            recent_posts=recent, state=getState())
 
 
 # returns course list data in json
@@ -192,8 +149,11 @@ def showCoursesJSON(category_id):
 # show an interface to Add a course to current subject
 @app.route('/category/<int:category_id>/add/', methods=['GET', 'POST'])
 def addCourse(category_id):
-    # shows a form page for adding new courses under provided categories
-    # when submitted, course is displayed both in Course list AND Recent Posts list
+    # check if user is logged in
+    if 'user_name' not in login_session:
+        flash('Hey, ya gotta log in first.')
+        return redirect('/')
+    # submitted course is displayed both in Course list AND Recent Posts list
     category = Category.query.filter_by(id=category_id).one()
     form = TitleDescriptionForm()
     if form.validate_on_submit():
@@ -206,7 +166,8 @@ def addCourse(category_id):
                 user_id=1)
         db.session.add(new_item)
         db.session.commit()
-        flash('* New course item %s successfully added to %s.' % (new_item.name, category.name))
+        flash('* New course item %s successfully added to %s.' %
+            (new_item.name, category.name))
         return redirect('/')
     if form.errors:
         flash('! There was a problem...%s' % (form.errors))
@@ -222,17 +183,19 @@ def showCourse(category_id=1, course_id=1):
     course = Item.query.filter_by(id=course_id).one()
     category = Category.query.filter_by(id=course.category_id).one()
     form = TitleDescriptionForm(obj=course)
-    return render_template('course-detail.html', category=category, course=course, form=form)
-    # return 'This will show more details on a specific course.'
+    return render_template('course-detail.html', category=category,
+                            course=course, form=form)
 
 
 # shows an interface to edit the details of a specific course
 # also has a link to delete this course from the category's course list
+# NOTE using Flask-WTF forms module
 @app.route('/category/<int:category_id>/<int:course_id>/edit/', methods=['GET', 'POST'])
 def editCourse(category_id, course_id):
     category = Category.query.filter_by(id=category_id).one()
     course = Item.query.filter_by(id=course_id).one()
     form = TitleDescriptionForm()
+    #NOTE validate_on_submit also checks if 'POST'
     if form.validate_on_submit():
         course.name = form.name.data
         course.url = form.url.data
@@ -242,22 +205,18 @@ def editCourse(category_id, course_id):
         return redirect('/')
     elif form.errors:
         first_msg = str(form.errors[form.errors.keys()[0]][0])
-        flash('! There was a problem with %s. %s' % (form.errors.keys()[0].upper(), first_msg))
+        flash('! There was a problem with %s. %s' %
+            (form.errors.keys()[0].upper(), first_msg))
     return render_template('course-detail.html', category=category, course=course, form=form)
-    # return 'This will be a UX allowing users to edit OR DELETE course details'
 
 
 # shows a confirmation view if user clicks 'delete'
 @app.route('/category/<int:category_id>/<int:course_id>/delete/')
 def deleteCourse(category_id, course_id):
     course = Item.query.filter_by(id=course_id).one()
-    count = Item.query.count()
-    print count
     db.session.delete(course)
-    count2 = Item.query.count()
-    print count2
+    # count = Item.query.count()
     db.session.commit()
-    # return 'Will be a confirmation screen in case DELETE was accidentally clicked'
     return redirect(url_for('showCourses', category_id=category_id))
 
 

@@ -6,10 +6,10 @@
 		</a>
 	</div>
 	<div class="header-login col s6">
-		{% if 'username' not in login_session %}
+		{% if 'user_name' not in session %}
 			<a class="btn-login" href="#">connect </a><span> to contribute</span>
 		{% else %}
-			<p>Salutations, {{ login_session['username'] }}.</p>
+			<p class="header-login__greeting">Salutations, {{ session['user_name'] }}.</p>
 			<a class="btn-logout" href="{{url_for('logoutUser')}}">disconnect </a>
 		{% endif %}
 	</div>
@@ -20,5 +20,5 @@
 	<!-- <a href="https://github.com/login/oauth/authorize?scope=user&client_id=16fc556aba5abc401d80&redirect_uri=http://localhost:5000/userconnect?state={{state}}"> 
       	git me in!
     </a> -->
-    <a href="/gitconnect/" >Git me in!</a>
+    <a href="/login?state={{state}}" >Git me in!</a>
 </div>

@@ -1,6 +1,8 @@
 <section class="course-container">
 	<h2>Courses.</h2>
-	<a href="/category/{{category_id}}/add/" class="btn waves-effect waves-light btn-add-course">new</a>
+	{% if 'user_name' in session %}
+		<a href="/category/{{category_id}}/add/" class="btn waves-effect waves-light btn-add-course">new</a>
+	{% endif %}
 	<button class="btn-close btn-floating waves-effect waves-light">x</button>
 	{% if courses !=[] %}
 	<div>

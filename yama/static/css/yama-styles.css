@@ -34,6 +34,9 @@ a {
 	transform: translateY(-50%);
 	font-size: 1.2em;
 }
+.header-login__greeting {
+	margin-bottom: 0;
+}
 
 .brand {
 }
@@ -105,11 +108,14 @@ section {
 	color: #000;
 }
 
+.recent-posts-container,
+.course-container {
+	padding-top: 0;
+}
 
 .course-container {
 	/*display: none;*/
 	width: 48%;
-	/*padding: 0;*/
 	position: absolute;
 	z-index: 100;
 	/*margin-right: 200px;*/
@@ -276,10 +282,11 @@ section {
 	height: 300px;
 }
 
+.btn-logout,
 .btn-login {
-
 	transition: all .2s ease-in-out;
 }
+.btn-logout:hover,
 .btn-login:hover {
 	color: #fff;
 	font-size: 1.4em;
