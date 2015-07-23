@@ -1,0 +1,25 @@
+
+<section class="category-container">
+		<h2>Skills.</h2>
+		{% if categories !=[] %}	
+		<div>
+			<ul class="category-list">
+				{% for category in categories %}
+					<li class="category-list__item" data-category-id="{{category.id}}">
+						<a class="category-list__item__link" href="#">
+							<div>
+								<svg class="category-icon">
+									<use xlink:href="{{ url_for('static', filename='images/svg-defs.svg') }}#{{category.name}}-logo" ></use>
+								</svg>
+								<span class="category-list__item__title"><strong>{{category.name}}</strong></span>
+							</div>
+							<p>{{category.description}}</p>
+						</a>
+					</li>
+					<div class="divider"></div>
+					<br>
+				{% endfor %}
+			</ul>
+		</div>
+		{% endif %}
+	</section>

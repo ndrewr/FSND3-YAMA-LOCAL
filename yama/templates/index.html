@@ -14,7 +14,12 @@
 				{% for category in categories %}
 					<li class="category-list__item" data-category-id="{{category.id}}">
 						<a class="category-list__item__link" href="#">
-							<span>{{category.name}}</span>
+							<div>
+								<svg class="category-icon">
+									<use xlink:href="{{ url_for('static', filename='images/svg-defs.svg') }}#{{category.name}}-logo" ></use>
+								</svg>
+								<span class="category-list__item__title"><strong>{{category.name}}</strong></span>
+							</div>
 							<p>{{category.description}}</p>
 						</a>
 					</li>
