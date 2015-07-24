@@ -42,7 +42,7 @@
 					{% for course in recent_posts %}
 						<li class="course-list-item">
 							<a href="/details/{{course.id}}">
-								<span>{{course.name}}</span>
+								<span><strong>{{course.name}}</strong></span>
 								<p>
 								{{
 									(course.description[0:40] if course.description|length > 39 else course.description[0:]) + '...'

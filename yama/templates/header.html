@@ -1,24 +1,26 @@
-<header class="row teal lighten-1">
+<header class="row teal lighten-1 ">
 	<div class="col s6 brand">
 		<a class="" href="{{url_for('home')}}">
-			<h1 class="">YAMA</h1>
+			<h1 class="brand-outline">YAMA</h1>
 			<span class="brand-sub-msg">Yet Another MOOC Aggregator</span>
 		</a>
 	</div>
-	<div class="header-login col s6">
+	<div class="header-login col s6 ">
 		{% if 'user_name' not in session %}
 			<a class="btn-login" href="#">connect </a><span> to contribute</span>
 		{% else %}
-			<p class="header-login__greeting">Salutations, {{ session['user_name'] }}.</p>
+			<p class="header-login__greeting text-outline">Salutations, {{ session['user_name'] }}.</p>
 			<a class="btn-logout" href="{{url_for('logoutUser')}}">disconnect </a>
 		{% endif %}
 	</div>
 </header>
 <div class="login-modal-container">
-	<h5>How will you login?</h5>
+	<h5>(っ◕‿◕)っ -==(  -_- )</h5>
+	<a class="login-modal__icon-container" href="/login?state={{state}}" >
+		<svg class="login-icon">
+			<use xlink:href="{{ url_for('static', filename='images/svg-defs.svg') }}#Github-octocat" ></use>
+		</svg>
+		<p class="btn-github-login">Git me in!</p>
+	</a>
 	<button class="btn-login-modal-close btn-floating waves-effect waves-light">x</button>
-	<!-- <a href="https://github.com/login/oauth/authorize?scope=user&client_id=16fc556aba5abc401d80&redirect_uri=http://localhost:5000/userconnect?state={{state}}"> 
-      	git me in!
-    </a> -->
-    <a href="/login?state={{state}}" >Git me in!</a>
 </div>

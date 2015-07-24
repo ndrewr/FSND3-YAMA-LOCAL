@@ -12,7 +12,7 @@
 		<div>
 			<ul class="category-list">
 				{% for category in categories %}
-					<li class="category-list__item" data-category-id="{{category.id}}">
+					<li class="category-list__item {% if category.id == current_category.id %}texture-background{% endif %}" data-category-id="{{category.id}}">
 						<a class="category-list__item__link" href="#">
 							<div>
 								<svg class="category-icon">
@@ -42,7 +42,7 @@
 				{% for course in recent_posts %}
 					<li class="course-list-item">
 						<a href="/details/{{course.id}}">
-							<span>{{course.name}}</span>
+							<span><strong>{{course.name}}</strong></span>
 							<p>
 								{{
 									(course.description[0:40] if course.description|length > 39 else course.description[0:]) + '...'

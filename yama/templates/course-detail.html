@@ -11,7 +11,13 @@
 <div class="divider"></div>
 
 <section class="course-item-detail">
-	<h4>{{course.name}}</h4>
+	<h4>
+		<span>
+			<svg class="category-icon--small">
+				<use xlink:href="{{ url_for('static', filename='images/svg-defs.svg') }}#{{category.name}}-logo" ></use>
+			</svg>
+		</span>
+		{{course.name}}</h4>
 	<p class="course-item-detail__author">original contributor: {{course.creator.name}}</p>
 	<div>
 		<a class="course-item-detail__link" href="{{course.url}}" target="_blank">link</a>

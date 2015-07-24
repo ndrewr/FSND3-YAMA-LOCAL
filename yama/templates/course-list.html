@@ -1,5 +1,7 @@
 <section class="course-container">
-	<h2>Courses.</h2>
+	<h2>
+		<span>Courses.</span>
+	</h2>
 	{% if 'user_name' in session %}
 		<a href="/category/{{category_id}}/add/" class="btn waves-effect waves-light btn-add-course">new</a>
 	{% endif %}
@@ -10,7 +12,7 @@
 			{% for course in courses %}
 				<li class="course-list-item">
 					<a href="/category/{{course.category_id}}/{{course.id}}/" class="course-list__item__link">
-						<span>{{course.name}}</span>
+						<span><strong>{{course.name}}</strong></span>
 						<p>{{
 							(course.description[0:80] if course.description|length > 79 else course.description[0:]) + '...'
 						}}</p>

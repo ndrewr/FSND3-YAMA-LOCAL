@@ -124,10 +124,11 @@ def getUserID():
 def showCourses(category_id):
     courses = Item.query.filter_by(category_id=category_id).all()
     categories = Category.query.all()
+    category = Category.query.filter_by(id=category_id).one()
     recent = Item.query.order_by(Item.id.desc()).limit(5)
 
     login_session['prev_url'] = request.path
-    return render_template('course-list-view.html', category_id=category_id,
+    return render_template('course-list-view.html', current_category=category,
                             categories=categories, courses=courses,
                             recent_posts=recent, state=getState())
 
@@ -210,6 +211,10 @@ def editCourse(category_id, course_id):
 # shows a confirmation view if user clicks 'delete'
 @app.route('/category/<int:category_id>/<int:course_id>/delete/')
 def deleteCourse(category_id, course_id):
+    # check if user is logged in
+    if 'user_name' not in login_session:
+        flash('Hey, ya gotta log in first.')
+        return redirect('/')
     course = Item.query.filter_by(id=course_id).one()
     db.session.delete(course)
     # count = Item.query.count()

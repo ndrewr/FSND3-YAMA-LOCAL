@@ -27,7 +27,7 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Integer, unique=True, nullable=False)
     description = db.Column(db.String(250))
-    # courses = db.relationship("Item", backref=db.backref('category', lazy='dynamic'))
+    courses = db.relationship("Item", backref='category', lazy='dynamic')
 
     def __init__(self, name="New Course",
                 description="A brand new course subject."):

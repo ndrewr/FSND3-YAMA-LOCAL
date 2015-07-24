@@ -16,8 +16,9 @@ $('.category-container').on('click', 'li', function(e) {
 			var text_cutoff = course.description.length > 79 ? 80 : course.description.length, 
 				course_item = '<li class="course-list-item">' + 
 			'<a href="' + url + '/' + course.id + '/" class="course-list__item__link">' + 
-			'<span>' + course.name + '</span><p>' + course.description.slice(0, text_cutoff) + '...' 
-			+ '</p></a></li><div class="divider"></div><br>';
+			'<span><strong>' + course.name + '</strong></span><p>' + 
+			course.description.slice(0, text_cutoff) + 
+			'...</p></a></li><div class="divider"></div><br>';
 			items += course_item;
 		});
 		_category_list.html('');
@@ -29,9 +30,11 @@ $('.category-container').on('click', 'li', function(e) {
 		$('.list-container').addClass('slide-in');
 	// 4. give a specific colour depending on category chosen? can add data-attribute with color
 		$('.recent-posts-container').addClass('obscure');
-
 		// set Add Course btn href attr val
 		$('.btn-add-course').attr('href', url+'/add/');
+		// give target li a shaded background to hilight; remove from prev hilighted
+		$('.texture-background').removeClass('texture-background');
+		$(e.currentTarget).addClass('texture-background');
 	});
 });
 
@@ -40,6 +43,7 @@ $('body').on('click', '.btn-close', function() {
 		setTimeout(function() {
 			$('.category-container').removeClass('rise');
 			$('.recent-posts-container').removeClass('obscure');
+			$('.texture-background').removeClass('texture-background');
 		}, 2000);
 
 });

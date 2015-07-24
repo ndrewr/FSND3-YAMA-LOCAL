@@ -9,10 +9,19 @@ html {
 }
 body {
 	margin-bottom: 140px;
+	background-image: url('../images/light-wool.png');
+
 }
+
+section, div, header, footer {
+	background-image: url('../images/light-wool.png');
+
+}
+
 header, div, footer {
 	position: relative;
 	overflow: auto;
+
 }
 footer {
 	width: 100%;
@@ -21,9 +30,40 @@ footer {
 	margin-top: 20px;
 }
 
+.footer-github-link {
+	height: 60px;
+	width: 150px;
+	vertical-align: middle;
+}
+
 a {
 	/*color: #fff;*/
 	color: #000;
+}
+
+.text-outline {
+	color: #000;
+	text-shadow:
+    1px 1px 0 #eaeaea,
+    /* Simulated effect for Firefox and Opera
+       and nice enhancement for WebKit */
+   -1px -1px 0 #eaeaea,  
+    1px -1px 0 #eaeaea,
+   -1px  1px 0 #eaeaea,
+    1px  1px 0 #eaeaea;
+}
+
+.brand-outline {
+	color: #000;
+	/*#32AB9F*/
+	text-shadow:
+    3px -3px 0 #eaeaea,
+    /* Simulated effect for Firefox and Opera
+       and nice enhancement for WebKit */
+   -1px -1px 0 #eaeaea,  
+    1px -1px 0 #eaeaea,
+   -1px  1px 0 #eaeaea,
+    1px  1px 0 #eaeaea;
 }
 
 .header-login {
@@ -101,7 +141,8 @@ section {
 .rise {
 	border: 1px solid #ccc;
 	box-shadow: 5px 3px 9px 1px #ccc;
-	background-color: #eff;
+/*	background-color: #eff;*/
+	background-color: #fefefe;
 }
 
 .category-list__item__link,
@@ -115,12 +156,12 @@ section {
 }
 
 .course-container {
-	/*display: none;*/
 	width: 48%;
 	position: absolute;
 	z-index: 100;
-	/*margin-right: 200px;*/
-	/*left: -320px;*/
+		
+	background-color: #f7f7f7;
+	background-image: url('../images/subtle-noise.png');
 	transition: all .8s ease-out .8s;
 }
 
@@ -268,7 +309,7 @@ section {
 	padding: 2em;
 	background-color: #eff;
 	opacity: 0;
-	border: 2px solid #BCAAA4;
+	border: 3px solid #BCAAA4;
 	border-radius: 5px;
 	top: 25%;
 	left: 50%;
@@ -281,7 +322,7 @@ section {
 	opacity: .95;
 	z-index: 300;
 	width: 300px;
-	height: 300px;
+	height: 320px;
 }
 
 .btn-logout,
@@ -292,4 +333,44 @@ section {
 .btn-login:hover {
 	color: #fff;
 	font-size: 1.4em;
+}
+
+.category-list__item__title {
+	vertical-align: text-bottom;
+	font-size: 2em;
+}
+.category-icon {
+	width: 60px;
+	height: 60px;
+	border-radius: 5px;
+	margin-right: 1em;
+}
+.category-icon--small {
+	width: 50px;
+	height: 50px;
+}
+.login-modal__icon-container {
+	display: block;
+	text-align: center;
+	border-radius: 5em;
+	border: 2px dotted #BCAAA4;
+	transition: all .3s ease-in-out;
+}
+.login-modal__icon-container:hover {
+	border: 3px solid #BCAAA4;
+}
+.login-icon {
+	width: 120px;
+	height: 120px;
+}
+.btn-github-login {
+	text-align: center;
+	font-size: 1.4em;
+	font-weight: 700;
+}
+
+.texture-background {
+	/* texture from transparenttextures.com */
+	background-color: #f7f7f7;
+	background-image: url('../images/subtle-noise.png');
 }
